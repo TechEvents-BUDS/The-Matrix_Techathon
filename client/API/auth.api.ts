@@ -4,11 +4,13 @@ export const register = async ({
   name,
   email,
   password,
+  phone,
   role = "user",
 }: {
   email: string;
   password: string;
   name: string;
+  phone: string;
   role?: "user" | "admin";
 }) => {
   try {
@@ -16,6 +18,7 @@ export const register = async ({
       name,
       email,
       password,
+      phone,
       role,
     });
 
@@ -60,7 +63,7 @@ export const login = async ({
     if (data.success) {
       return {
         success: true,
-        response: data.message,
+        response: data.data,
       };
     } else {
       return {

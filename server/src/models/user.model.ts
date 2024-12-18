@@ -46,6 +46,14 @@ const UserSchema = new Schema<IUser>(
       type: Boolean,
       default: false,
     },
+    onboarded: {
+      type: Boolean,
+      default: false,
+    },
+    diagnosis: {
+      type: [String],
+      default: [],
+    }
   },
   {
     timestamps: true,

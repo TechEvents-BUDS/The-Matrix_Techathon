@@ -56,11 +56,11 @@ export const ProfileButton = () => {
         {user && (
           <>
             <Avatar>
-              <AvatarImage src="/images/dummy-user.webp" alt={user.name} />
+              <AvatarImage src="/images/user.webp" alt={user.name} className="border-2 border-blue-200 rounded-full" />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
             <div className="max-md:hidden text-left">
-              <p className="text-text dark:text-darkText text-sm">
+              <p className="text-black text-sm">
                 {user.name}
               </p>
               <p className="text-xs text-neutral-500">@{user.role}</p>

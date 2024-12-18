@@ -9,7 +9,7 @@ export const registerUser = async (
   next: NextFunction
 ): Promise<any> => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, phone, role } = req.body;
     // Validations
     if (!name) return next(throwError("Name is required", 400));
     if (!email) return next(throwError("Email is required", 400));
@@ -18,11 +18,15 @@ export const registerUser = async (
     if (!password) return next(throwError("Password is required", 400));
     if (password.includes(" "))
       return next(throwError("Password should not contain spaces", 400));
+    if (!phone) return next(throwError("Phone number is required", 400));
+    if (phone.includes(" "))
+      return next(throwError("Password should not contain spaces", 400));
 
     const user = await User.create({
       name,
       email,
       password,
+      phone,
       role,
     });
 

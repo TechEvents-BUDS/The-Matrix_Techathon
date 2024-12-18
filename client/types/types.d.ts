@@ -34,4 +34,17 @@ export interface IUser {
   avatar?: string;
   hasNotifications: boolean;
   isEmailVerified: boolean;
+  onboarded: boolean;
+}
+
+export interface IMessage {
+  _id: string;
+  content: string;
+  role: "user" | "model";
+  user: {
+    _id: string;
+    email: string;
+    name: string;
+    phone: string;
+  }
 }
