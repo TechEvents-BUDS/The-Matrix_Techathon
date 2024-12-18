@@ -34,4 +34,5 @@ export interface IUser {
   avatar?: string;
   hasNotifications: boolean;
   isEmailVerified: boolean;
+  onboarded: boolean;
 }

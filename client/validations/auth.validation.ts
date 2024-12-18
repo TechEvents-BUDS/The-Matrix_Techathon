@@ -16,6 +16,11 @@ const registerSchema = z.object({
     .string({ message: "Name is required" })
     .min(1, { message: "Name is required*" })
     .min(3, { message: "Name must be atleast 3 characters" }),
+  phone: z
+    .string({ message: "Phone Number is required" })
+    .min(1, { message: "Phone Number is required*" })
+    .min(3, { message: "Phone number be atleast 11 digits" }),
+
   // username: z
   //   .string({ message: "Username is required" })
   //   .min(1, { message: "Username is required*" })

@@ -69,6 +69,14 @@ const SignupPage = () => {
             isError={errors.email || false}
             errorMessage={errors.email?.message}
           />
+          <FloatingInput
+            placeholder="Phone Number"
+            type="text"
+            name="phone"
+            register={register}
+            isError={errors.phone || false}
+            errorMessage={errors.phone?.message}
+          />
           <PasswordInput
             placeholder="Password"
             type="password"
