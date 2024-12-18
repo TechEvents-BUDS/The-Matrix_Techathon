@@ -154,7 +154,6 @@ export const getDiagnosis = async (
 
     createDocument(user.id, `diagnosis: ${JSON.parse(response.text())}`);
     return true;
-
   } catch (error) {
     console.log(error);
   }

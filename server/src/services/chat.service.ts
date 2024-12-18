@@ -34,11 +34,12 @@ export const getChat = async (userId: string, input: string, history: MessageHis
     const { response } = await chat.sendMessage(input)
     if (response.candidates && response.candidates[0].content.parts[0].functionCall) {
         const { functionCall } = response.candidates[0].content.parts[0]
+
         console.log(functionCall)
         console.log(functionCall.name)
         if (functionCall.name === "getDocuments") {
             const documents = await getDocuments(userId)
-            return chat.sendMessage("Retrieved documents: " + documents.map((doc) => doc.content).join(", "))
+            return chat.sendMessage("<documents>" + documents.map((doc) => doc.content).join(", ") + "</documents>")
         }
         if (functionCall.name === "createDocument") {
             const { args } = functionCall

@@ -10,7 +10,7 @@ export default function RootLayout({
       {/* Left Section */}
       <div className="flex-1 relative hidden md:block">
         <Image
-          src="/images/auth.jpg"
+          src="/images/bg.jpg"
           alt="Authentication"
           width={1500}
           height={1500}
