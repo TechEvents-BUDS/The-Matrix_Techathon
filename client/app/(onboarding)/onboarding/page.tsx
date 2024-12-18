@@ -1,30 +1,45 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { completeOnboarding } from "@/API/question.api";
+import { completeOnboarding, getgeneratedQuestions } from "@/API/question.api";
 import { useAuth } from "@/store/AuthProvider";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
-const questions = [
-  "What are your career goals for the next 5 years?",
-  "Describe a challenging situation you've faced and how you overcame it.",
-  "What skills do you think are most important in your field?",
-  "How do you stay updated with industry trends?",
-  "What's the most interesting project you've worked on?",
-  "How do you handle stress and pressure at work?",
-  "What's your approach to problem-solving?",
-  "How do you prefer to receive feedback?",
-];
+// const questions = [
+//   "What are your career goals for the next 5 years?",
+//   "Describe a challenging situation you've faced and how you overcame it.",
+//   "What skills do you think are most important in your field?",
+//   "How do you stay updated with industry trends?",
+//   "What's the most interesting project you've worked on?",
+//   "How do you handle stress and pressure at work?",
+//   "What's your approach to problem-solving?",
+//   "How do you prefer to receive feedback?",
+// ];
 
 const OnboardingPage = () => {
   const router = useRouter();
   const { setUser } = useAuth();
+  const [questions, setQuestions] = useState<string[]>([]);
   const [answers, setAnswers] = useState<string[]>(
     new Array(questions.length).fill("")
   );
+
+  const fetchGeneratedQuestions = async () => {
+    const { response, success } = await getgeneratedQuestions();
+    if (success) {
+      setQuestions(response);
+      setAnswers(new Array(response.length).fill(""));
+    } else {
+      toast.error(response || "Something went wrong");
+    }
+  };
+
+  useEffect(() => {
+    fetchGeneratedQuestions();
+  }, []);
 
   const handleAnswerChange = (index: number, value: string) => {
     const newAnswers = [...answers];

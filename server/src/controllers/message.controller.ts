@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import { Message } from "../models/message.model";
 import { throwError } from "../utils/helpers";
 import { AuthRequest } from "../middlewares/auth.middleware";
