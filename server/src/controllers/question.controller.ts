@@ -3,6 +3,7 @@ import { Question } from "../models/question.model";
 import { throwError } from "../utils/helpers";
 import { AuthRequest } from "../middlewares/auth.middleware";
 import { User } from "../models/user.model";
+import getGemini from "../gemini";
 
 export const getQuestions = async (
   req: AuthRequest,
