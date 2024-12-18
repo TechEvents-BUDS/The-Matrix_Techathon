@@ -7,6 +7,7 @@ import { completeOnboarding, getgeneratedQuestions } from "@/API/question.api";
 import { useAuth } from "@/store/AuthProvider";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { Loader } from "lucide-react";
 
 // const questions = [
 //   "What are your career goals for the next 5 years?",
@@ -23,6 +24,7 @@ const OnboardingPage = () => {
   const router = useRouter();
   const { setUser } = useAuth();
   const [questions, setQuestions] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [answers, setAnswers] = useState<string[]>(
     new Array(questions.length).fill("")
   );
@@ -32,8 +34,10 @@ const OnboardingPage = () => {
     if (success) {
       setQuestions(response);
       setAnswers(new Array(response.length).fill(""));
+      setIsLoading(false);
     } else {
       toast.error(response || "Something went wrong");
+      setIsLoading(false);
     }
   };
 
@@ -68,6 +72,11 @@ const OnboardingPage = () => {
       <h1 className="text-3xl font-bold text-center my-10 capitalize">
         Lets get started, answer the few questions
       </h1>
+      {isLoading ? (
+        <div className="w-full h-[500px] bg-white center">
+         <Loader />
+        </div>
+      ) : (
       <div className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <form onSubmit={handleSubmit} className="space-y-8">
           <div className="grid lg:grid-cols-2 gap-8">
@@ -98,6 +107,8 @@ const OnboardingPage = () => {
           </div>
         </form>
       </div>
+      )}
+
     </div>
   );
 };
