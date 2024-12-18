@@ -29,3 +29,13 @@ export interface IQuestion extends Document {
   answer: string;
   user: Types.ObjectId;
 }
+
+export interface IDocument extends Document {
+  user: Types.ObjectId;
+  content: string;
+}
+
+export interface MessageHistory {
+    role: string
+    content: string;
+}
