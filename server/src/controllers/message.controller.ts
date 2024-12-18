@@ -16,7 +16,7 @@ export const getMessages = async (
       "name email phone"
     );
 
-    if (!messages || messages.length === 0)
+    if (!messages)
       return next(throwError("No messages found", 400));
 
     return res.status(201).json({

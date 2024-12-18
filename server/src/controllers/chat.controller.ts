@@ -12,7 +12,6 @@ export const chat = async (
 ): Promise<any> => {
   try {
     if (!req.user) return next(throwError("Unauthorized Access", 401));
-
     const { content } = req.body;
 
     // get prreviosu messages

@@ -21,7 +21,7 @@ export interface IUser extends Document {
 
 export interface IMessage extends Document {
   content: string;
-  role: "user" | "system";
+  role: "user" | "model";
   user: Types.ObjectId;
 }
 
@@ -37,6 +37,6 @@ export interface IDocument extends Document {
 }
 
 export interface MessageHistory {
-    role: string
-    content: string;
+  role: string
+  content: string;
 }

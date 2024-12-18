@@ -3,7 +3,7 @@ import { IMessage } from "../types/type";
 import mongoosePaginate from "mongoose-paginate-v2";
 
 const ROLES = Object.freeze({
-  SYSTEM: "system",
+  SYSTEM: "model",
   USER: "user",
 } as const);
 

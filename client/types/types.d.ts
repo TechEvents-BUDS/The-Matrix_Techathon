@@ -40,7 +40,7 @@ export interface IUser {
 export interface IMessage {
   _id: string;
   content: string;
-  role: "user" | "system";
+  role: "user" | "model";
   user: {
     _id: string;
     email: string;

@@ -4,7 +4,9 @@ import { Brain, Send, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
-import { getMessages } from "@/API/chat.api";
+import { getMessages, sendChat } from "@/API/chat.api";
+import { IMessage } from "@/types/types";
+import { toast } from "sonner";
 
 type Message = {
   text: string;
@@ -17,17 +19,22 @@ export default function HomePage() {
       text: "Hello, I'm your AI Therapist. How are you feeling today?",
       isUser: false,
     },
-    { text: "Hi i am Danish", isUser: true },
   ]);
 
-
   useEffect(() => {
-    (async() => {
-      const messages = await getMessages()
-      const formatMessages = messages.data.map((message: any) => ({text: message.content, isUser: message.role === "user"}))
-      setMessages(formatMessages)
-    })()
-  }, [])
+    (async () => {
+      const { response, success } = await getMessages();
+      if (success) {
+        const formatMessages = response.map((message: any) => ({
+          text: message.content,
+          isUser: message.role === "user",
+        }));
+        setMessages(formatMessages);
+      } else {
+        toast.error("Something went wrong");
+      }
+    })();
+  }, []);
 
   const [input, setInput] = useState("");
 
@@ -36,33 +43,24 @@ export default function HomePage() {
     lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (input.trim()) {
-      setMessages([...messages, { text: input, isUser: true }]);
-      // Here you would typically send the message to your AI backend
-      // and then add the AI's response to the messages
-      // For this example, we'll just add a placeholder response
-      setTimeout(() => {
+      setMessages((prev) => [...prev, { text: input, isUser: true }]);
+      const { response, success } = await sendChat(input);
+      setInput("");
+      if (success) {
         setMessages((prev) => [
           ...prev,
-          {
-            text: "I understand. Can you tell me more about that?",
-            isUser: false,
-          },
+          { text: response?.[1].content, isUser: false },
         ]);
-      }, 1000);
-      setInput("");
+      }
     }
   };
-  function handleClick() {
-    
-  }
+  function handleClick() {}
   return (
     <div className="relative flex flex-col chat-height bg-gray-100">
-      <div
-        className="flex-1 overflow-y-auto p-4 space-y-4 pb-20"
-      >
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-20">
         {messages.map((message, index) => (
           <div
             key={index}
@@ -111,7 +109,7 @@ export default function HomePage() {
             className="flex-1"
           />
           <Button type="submit">
-            <Send onClick={handleClick}/>
+            <Send onClick={handleClick} />
           </Button>
         </div>
       </form>
