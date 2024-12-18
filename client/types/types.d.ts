@@ -36,3 +36,15 @@ export interface IUser {
   isEmailVerified: boolean;
   onboarded: boolean;
 }
+
+export interface IMessage {
+  _id: string;
+  content: string;
+  role: "user" | "system";
+  user: {
+    _id: string;
+    email: string;
+    name: string;
+    phone: string;
+  }
+}

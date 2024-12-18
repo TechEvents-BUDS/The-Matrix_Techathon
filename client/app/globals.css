@@ -81,3 +81,7 @@
     @apply md:px-10 px-4 py-10;
   }
 }
+
+.chat-height {
+  height: calc(100vh - 80px);
+}
