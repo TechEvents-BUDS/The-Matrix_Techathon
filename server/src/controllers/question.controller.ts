@@ -2,6 +2,7 @@ import { NextFunction, Response } from "express";
 import { Question } from "../models/question.model";
 import { throwError } from "../utils/helpers";
 import { AuthRequest } from "../middlewares/auth.middleware";
+import { User } from "../models/user.model";
 
 export const getQuestions = async (
   req: AuthRequest,
@@ -30,26 +31,34 @@ export const getQuestions = async (
   }
 };
 
-export const createQuestion = async (
+export const createQuestions = async (
   req: AuthRequest,
   res: Response,
   next: NextFunction
 ): Promise<any> => {
   try {
     if (!req.user) return next(throwError("Unauthorized Access", 401));
-    const { question, answer } = req.body;
-    const questionDoc = await Question.create({
-      question,
-      answer,
-      user: req.user._id,
+    const { onboardingData } = req.body;
+
+    const promises = onboardingData.map((data: any) => {
+      const { question, answer } = data;
+      return Question.create({
+        question,
+        answer,
+        user: req?.user?._id,
+      });
     });
 
-    if (!questionDoc) return next(throwError("Failed to add message", 500));
+    await Promise.all(promises);
+
+    const updatedUser = await User.findByIdAndUpdate(req.user._id, {
+      onboarded: true,
+    }, { new: true }).select("-password");
 
     return res.status(201).json({
       success: true,
       message: "question added successfully",
-      data: questionDoc,
+      data: updatedUser,
     });
   } catch (error) {
     console.log(error);

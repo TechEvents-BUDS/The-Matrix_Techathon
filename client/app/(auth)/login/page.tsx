@@ -41,7 +41,10 @@ const LoginPage = () => {
       setUser(response.user);
       localStorage.setItem("token", response.token);
       toast.success("Login successfull");
-      router.push("/");
+      if (response.user.onboarded === false) router.push("/onboarding");
+      else {
+        router.push("/");
+      }
     } else return toast.error(response as string);
   };
 

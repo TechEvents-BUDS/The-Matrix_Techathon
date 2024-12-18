@@ -63,7 +63,7 @@ export const login = async ({
     if (data.success) {
       return {
         success: true,
-        response: data.message,
+        response: data.data,
       };
     } else {
       return {
