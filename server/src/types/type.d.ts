@@ -14,6 +14,7 @@ export interface IUser extends Document {
   hasNotifications: boolean;
   isEmailVerified: boolean;
   onboarded: boolean;
+  diagnosis: string[];
   comparePassword(candidatePassword: string): Promise<boolean>;
   generateAccessToken(): Promise<string>;
 }

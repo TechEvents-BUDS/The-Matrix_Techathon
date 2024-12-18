@@ -44,3 +44,17 @@ Return the generated response in the form of array of strings (array of question
 `
 
 export const initialChatPrompt = ``
+
+export const diagnosisFromAnswersPrompt = `
+Based on the user’s response, analyze their described emotions, behaviors, and experiences to identify the most likely mental health disorder among the following: Depression, Anxiety Disorders, Obsessive-Compulsive Disorder (OCD), or Post-Traumatic Stress Disorder (PTSD). Use the following guidelines:
+
+If the user describes persistent sadness, hopelessness, loss of interest in activities, or fatigue, return "Depression".
+
+If the user mentions excessive worry, restlessness, or physical symptoms like rapid heartbeat or sweating related to nervousness, return "Anxiety Disorders".
+
+If the user describes intrusive thoughts, compulsive behaviors, or rituals performed to reduce distress, return "Obsessive-Compulsive Disorder (OCD)".
+
+If the user shares experiences of flashbacks, nightmares, or heightened alertness related to past trauma, return "Post-Traumatic Stress Disorder (PTSD)".
+
+Return a array of strings containing the disorder name: "Depression", "Anxiety Disorders", "Obsessive-Compulsive Disorder (OCD)", or "Post-Traumatic Stress Disorder (PTSD)".
+`

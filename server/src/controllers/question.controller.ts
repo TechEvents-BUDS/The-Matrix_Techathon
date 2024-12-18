@@ -4,6 +4,8 @@ import { throwError } from "../utils/helpers";
 import { AuthRequest } from "../middlewares/auth.middleware";
 import { User } from "../models/user.model";
 import getGemini from "../gemini";
+import { diagnosisFromAnswersPrompt } from "../gemini/prompts";
+import { IUser } from "../types/type";
 
 export const getQuestions = async (
   req: AuthRequest,
@@ -51,6 +53,8 @@ export const createQuestions = async (
     });
 
     await Promise.all(promises);
+    
+    getDiagnosis(req.user)
 
     const updatedUser = await User.findByIdAndUpdate(req.user._id, {
       onboarded: true,
@@ -66,3 +70,42 @@ export const createQuestions = async (
     return next(error);
   }
 };
+
+
+export const getDiagnosis = async(
+  user: IUser,
+): Promise<any> => {
+  try {
+    const questions = await Question.find({ user: user._id }).populate(
+      "user",
+      "name email phone"
+    );
+
+    const formatQuestionAnswers = questions.map((question) => {
+      return `
+      question: ${question.question}
+      answer: ${question.answer}
+      `
+    });
+
+    const gemini = getGemini();
+    
+    const chat = gemini.startChat({
+      history: [
+        {
+          role: "user",
+          parts: [{text: diagnosisFromAnswersPrompt}]
+        }
+      ]
+    });
+
+    const {response} = await chat.sendMessage(`<data>${formatQuestionAnswers.join("\n")}</data> <prompt>generate diagnosis</prompt>`);
+
+    User.findByIdAndUpdate(user._id, {
+      diagnosis: JSON.parse(response.text()),
+    });
+    
+  } catch (error) {
+    console.log(error);
+  }
+}
