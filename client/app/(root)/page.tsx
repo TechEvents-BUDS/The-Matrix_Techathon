@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import { Brain, Send, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import axios from "axios";
+import { getMessages } from "@/API/chat.api";
 
 type Message = {
   text: string;
@@ -17,6 +19,16 @@ export default function HomePage() {
     },
     { text: "Hi i am Danish", isUser: true },
   ]);
+
+
+  useEffect(() => {
+    (async() => {
+      const messages = await getMessages()
+      const formatMessages = messages.data.map((message: any) => ({text: message.content, isUser: message.role === "user"}))
+      setMessages(formatMessages)
+    })()
+  }, [])
+
   const [input, setInput] = useState("");
 
   const lastMessageRef = useRef<HTMLDivElement>(null);
@@ -43,7 +55,9 @@ export default function HomePage() {
       setInput("");
     }
   };
-
+  function handleClick() {
+    
+  }
   return (
     <div className="relative flex flex-col chat-height bg-gray-100">
       <div
@@ -97,7 +111,7 @@ export default function HomePage() {
             className="flex-1"
           />
           <Button type="submit">
-            <Send />
+            <Send onClick={handleClick}/>
           </Button>
         </div>
       </form>
