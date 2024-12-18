@@ -6,6 +6,7 @@ import { User } from "../models/user.model";
 import getGemini from "../gemini";
 import { diagnosisFromAnswersPrompt } from "../gemini/prompts";
 import { IUser } from "../types/type";
+import { createDocument } from "../services/document.service";
 
 export const getQuestions = async (
   req: AuthRequest,
@@ -155,6 +156,8 @@ export const getDiagnosis = async (
       }
     });
 
+    createDocument(user.id, `diagnosis: ${JSON.parse(response.text())}`);
+    
   } catch (error) {
     console.log(error);
   }
