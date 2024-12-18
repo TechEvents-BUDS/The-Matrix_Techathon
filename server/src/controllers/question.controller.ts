@@ -147,17 +147,14 @@ export const getDiagnosis = async (
     });
 
     const { response } = await chat.sendMessage(`<data>${formatQuestionAnswers.join("\n")}</data> <prompt>generate diagnosis, give only JSON data, and nothing else, no text at all, jsut a json data, with an array of string</prompt>`);
-    console.log("RESPONSE_TEXT: ", response.text());
     const diagnosis = extractJSON(response.text());
-    console.log("RESPONSE: ", diagnosis);
-    User.findByIdAndUpdate(user._id, {
-      $set: {
-        diagnosis: diagnosis.diagnosis,
-      }
+    await User.findByIdAndUpdate(user._id, {
+      diagnosis,
     });
 
     createDocument(user.id, `diagnosis: ${JSON.parse(response.text())}`);
     
+    return true;
   } catch (error) {
     console.log(error);
   }

@@ -4,8 +4,9 @@ import { ProfileButton } from "./ProfileButton";
 export const Header = () => {
   return (
     <header className="flex justify-between items-center p-4 bg-neutral-200 shadow-md">
-      {/* Logo */}
-      <div></div>
+      <div>
+        <img src="/images/bg.jpg"/>
+      </div>
       <div>
         <ProfileButton />
       </div>
